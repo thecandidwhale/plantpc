@@ -33,3 +33,6 @@
 
 # Documentation
 *.pdf
+
+#Python venv
+venv
