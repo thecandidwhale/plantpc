@@ -9,17 +9,19 @@ from adafruit_seesaw.seesaw import Seesaw
 i2c_bus = board.I2C()
 
 # auth_user_tweepy & post_tweet written by Revekka K. from Twitchess
+# twitter account is "@TheMingAralia"
 def auth_user_tweepy():
     auth=tweepy.OAuthHandler(consumer_key,consumer_secret)
     auth.set_access_token(token,token_secret)
     api=tweepy.API(auth)
     return api
 
+# tweet function provided by Revekka K.
 def post_tweet(data):
     api = auth_user_tweepy()
     api.update_status(data)
 
-# uses Seesaw library to check water; returns value from 200(very dry) - 2000(very wet)
+# uses Adafruit Seesaw library to check water; returns value from 200(very dry) - 2000(very wet)
 def checkWater():
     ss = Seesaw(i2c_bus, addr=0x36)
     touch = ss.moisture_read()
@@ -46,8 +48,15 @@ def needsWater():
 # bad error message, but I'll figure out debugging later.
 try:
     while True:
-       needsWater()
-       time.sleep(3600)
+        water = needsWater()
+        if water() > 700:
+           print("Hail hydrate.")
+        elif water() > 500 and water() < 699:
+            print("Going to need hydration soon.")
+        else:
+            print("I require hydration.")
+        time.sleep(3600)
 
-except Exception:
-    print("This is a bad error message, but an error has occurred.")
+except Exception as e:
+    print("Exception")
+    print(e)
