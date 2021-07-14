@@ -45,7 +45,6 @@ def needsWater():
     # might need a new cable
 
 # main loop. runs every 60 minutes.
-# bad error message, but I'll figure out debugging later.
 try:
     while True:
         water = needsWater()
